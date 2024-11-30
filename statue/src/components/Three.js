@@ -14,7 +14,9 @@ function Three() {
     
     useEffect(()=>{
     
-        let offsetX = 20;
+        let offsetX = 0;
+        // let isOrbit = true
+        let isOrbit = false
 
         // Init
         const scene = new three.Scene();
@@ -24,9 +26,9 @@ function Three() {
         renderer.setAnimationLoop( animate );
         sceneRef.current.appendChild(renderer.domElement);
         camera.position.z = 7;
-        camera.position.y = 2;
+        camera.position.y = 10;
         camera.position.x = offsetX;
-        camera.rotation.x = -0.4;
+        camera.rotation.x = 0.05;
         // scene.background = new three.Color(0x87CEEB); // Light blue
 
 
@@ -35,26 +37,42 @@ function Three() {
         scene.add( ambientLight );
 
         // Point Lights
-        const dynamicPointLight = new three.PointLight( 0xffffff, 70, 100 );
+        const dynamicPointLight = new three.PointLight( 0xffffff, 0, 100 );
         dynamicPointLight.position.set( offsetX, 1, 5 );
 
-        const staticPointLightJon = new three.PointLight( 0xffffff, 0, 100 )
-        staticPointLightJon.position.set( 0, 1, 2 );
+        const staticPointLightJon = new three.PointLight( 0xffffff, 40, 100 )
+        staticPointLightJon.position.set( 6, 2, 0 );
 
+        const staticPointLightJonHelper = new three.PointLightHelper(staticPointLightJon, 0.5)
+
+        // scene.add( staticPointLightJonHelper );
         scene.add( dynamicPointLight );
         scene.add( staticPointLightJon );
 
 
+
         // Plane
-        const geometry = new three.BoxGeometry( 7, 0.1, 3 );
+        const planeGeometry = new three.BoxGeometry( 60, 0.1, 10 );
         const material = new three.MeshToonMaterial( { color: 0xffffff } );
 
 
-        const plane1 = new three.Mesh( geometry, material );
+        const plane1 = new three.Mesh( planeGeometry, material );
         plane1.receiveShadow = true
-        plane1.position.y = -1
+        plane1.position.y = -3
+        plane1.position.z = -2
         plane1.position.x = 6
-        // scene.add( plane1 );
+        scene.add( plane1 );
+
+
+        // Wall
+        const wallGeometry = new three.BoxGeometry( 60, 8, 0.1 );
+        const wall = new three.Mesh( wallGeometry, material );
+        wall.receiveShadow = true
+        wall.position.y = 1
+        wall.position.x = 6
+        wall.position.z = -6
+
+        scene.add( wall );
 
 
 
@@ -68,6 +86,7 @@ function Three() {
             })
             
             glftScene.scene.position.x = 6
+            glftScene.scene.position.z = -2
             glftScene.scene.scale.set(3,3,3)
             scene.add(glftScene.scene)
         });
@@ -81,7 +100,7 @@ function Three() {
             })
             
             glftScene.scene.position.x = 24
-            glftScene.scene.position.z = 1
+            glftScene.scene.position.z = -2
             glftScene.scene.scale.set(3,3,3)
             scene.add(glftScene.scene)
         });
@@ -99,7 +118,7 @@ function Three() {
                 height : 3,
             });
 
-            const subtitleFontGeometry = new TextGeometry('Eunchan Kim', {
+            const subtitleFontGeometry = new TextGeometry('Andy Kim', {
                 font : font,
                 size : 0.5,
                 height : 3,
@@ -109,14 +128,14 @@ function Three() {
             const subtitleTextMesh = new three.Mesh(subtitleFontGeometry, [ new three.MeshNormalMaterial({color : 0xa8a8a8 }) ])
             
             titleTextMesh.position.z = -4
-            titleTextMesh.position.y = 0
+            titleTextMesh.position.y = 12
             titleTextMesh.position.x = -10
-            titleTextMesh.rotation.x = -0.4
+            // titleTextMesh.rotation.x = -0.4
 
-            subtitleTextMesh.position.z = -2.5
-            subtitleTextMesh.position.y = -4
+            subtitleTextMesh.position.z = -4
+            subtitleTextMesh.position.y = 8
             subtitleTextMesh.position.x = -9.9
-            subtitleTextMesh.rotation.x = -0.4
+            // subtitleTextMesh.rotation.x = -0.4
 
             scene.add(subtitleTextMesh)
             scene.add(titleTextMesh)
@@ -137,16 +156,16 @@ function Three() {
                 height : 3,
             });
 
-            const jonTitleTextMesh = new three.Mesh(jonTitleFontGeometry, [ new three.MeshPhongMaterial({color : 0xffffff }) ])
-            const jonSubtitleTextMesh = new three.Mesh(jonSubtitleFontGeometry, [ new three.MeshPhongMaterial({color : 0xa8a8a8 }) ])
+            const jonTitleTextMesh = new three.Mesh(jonTitleFontGeometry, [ new three.MeshBasicMaterial ({color : 0xffffff }) ])
+            const jonSubtitleTextMesh = new three.Mesh(jonSubtitleFontGeometry, [ new three.MeshBasicMaterial ({color : 0xffffff }) ])
             
-            jonTitleTextMesh.position.z = -3.2
+            jonTitleTextMesh.position.z = -5.2
             jonTitleTextMesh.position.y = 0.8
             jonTitleTextMesh.position.x = 10
             jonTitleTextMesh.rotation.x = -0.2
 
-            jonSubtitleTextMesh.position.z = -3.2
-            jonSubtitleTextMesh.position.y = -0.3
+            jonSubtitleTextMesh.position.z = -5.2
+            jonSubtitleTextMesh.position.y = -0.0
             jonSubtitleTextMesh.position.x = 9.9
             jonSubtitleTextMesh.rotation.x = -0.1
 
@@ -167,46 +186,72 @@ function Three() {
                 height : 3,
             });
 
-            const martinTitleTextMesh = new three.Mesh(martinTitleFontGeometry, [ new three.MeshPhongMaterial({color : 0xffffff }) ])
-            const martinSubtitleTextMesh = new three.Mesh(martinSubtitleFontGeometry, [ new three.MeshPhongMaterial({color : 0xa8a8a8 }) ])
+            const martinTitleTextMesh = new three.Mesh(martinTitleFontGeometry, [ new three.MeshBasicMaterial({color : 0xffffff }) ])
+            const martinSubtitleTextMesh = new three.Mesh(martinSubtitleFontGeometry, [ new three.MeshBasicMaterial({color : 0xffffff }) ])
             
-            martinTitleTextMesh.position.z = -3.2
+            martinTitleTextMesh.position.z = -5.2
             martinTitleTextMesh.position.y = 0.8
             martinTitleTextMesh.position.x = 27
             martinTitleTextMesh.rotation.x = -0.2
-
-            martinSubtitleTextMesh.position.z = -3.2
-            martinSubtitleTextMesh.position.y = -0.3
+            
+            martinSubtitleTextMesh.position.z = -5.2
+            martinSubtitleTextMesh.position.y = -0.0
             martinSubtitleTextMesh.position.x = 27
             martinSubtitleTextMesh.rotation.x = -0.1
-
+            
             scene.add(martinSubtitleTextMesh)
             scene.add(martinTitleTextMesh)
-
-
-
-
-
+            
 
             
+            
+            
+            
+            
         })
+        
+        
+        // Orbit control
+        if (isOrbit) {
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; // Smooth movement
+            controls.dampingFactor = 0.05; // Adjust for responsiveness
+            controls.screenSpacePanning = true; // Allow panning
+            
 
+        }
+        console.log(camera.position.x);
+        
 
-
-
-
-
-
-
-
+        let positionConstant = 0.5
         // On Mouse wheel 
         const handleWheel = (event) => {
-            if (event.deltaY < 0 && camera.position.x > -7) {
-                camera.position.x -= 0.2; 
-                dynamicPointLight.position.x -= 0.2; 
-            } else if (event.deltaY > 0) {
-                camera.position.x += 0.2;
-                dynamicPointLight.position.x += 0.2;
+
+
+
+            if (event.deltaY > 0 && camera.position.y > 2) {
+                camera.position.y -= positionConstant; 
+                dynamicPointLight.position.y -= positionConstant; 
+                {camera.rotation.x >= -0.4 ? camera.rotation.x -= 0.01 : null}
+                console.log(1111);
+
+
+            } else if (event.deltaY < 0 && camera.position.x  < 0.1 && camera.rotation.x <= 0) {
+                console.log(2222);
+                camera.position.y += positionConstant; 
+                dynamicPointLight.position.y += positionConstant; 
+                camera.rotation.x += 0.01
+                // {camera.rotation.x <= -0.4 ? camera.rotation.x += 0.01 : null}                
+            }
+            else if (event.deltaY < 0 && camera.position.x > 0) {
+                console.log(3333);
+                camera.position.x -= positionConstant; 
+                dynamicPointLight.position.x -= positionConstant; 
+
+            } else if (event.deltaY > 0 && camera.position.x < 40) {
+                console.log(4444);
+                camera.position.x += positionConstant;
+                dynamicPointLight.position.x += positionConstant;
             }
         };
         window.addEventListener('wheel', handleWheel);
@@ -216,7 +261,7 @@ function Three() {
             // dynamicPointLight.position.x += 0.003;
 
 
-
+            
             renderer.render( scene, camera );
         }
 
@@ -239,11 +284,6 @@ function Three() {
         // scene.add(gridHelperXY);
         
         
-        // Orbit control
-        // const controls = new OrbitControls(camera, renderer.domElement);
-        // controls.enableDamping = true; // Smooth movement
-        // controls.dampingFactor = 0.05; // Adjust for responsiveness
-        // controls.screenSpacePanning = true; // Allow panning
     })    
 
 
