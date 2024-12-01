@@ -7,6 +7,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
+
 
 function Three() {
 
@@ -33,27 +35,43 @@ function Three() {
 
 
         // Ambient Light
-        const ambientLight = new three.AmbientLight( 0xffffff, 0.2 ); 
+        const ambientLight = new three.AmbientLight( 0xffffff, 0.1 ); 
         scene.add( ambientLight );
 
         // Point Lights
-        const dynamicPointLight = new three.PointLight( 0xffffff, 0, 100 );
+        const dynamicPointLight = new three.PointLight( 0xffffff, 50, 100 );
         dynamicPointLight.position.set( offsetX, 1, 5 );
 
         const staticPointLightJon = new three.PointLight( 0xffffff, 40, 100 )
         staticPointLightJon.position.set( 6, 2, 0 );
 
-        const staticPointLightJonHelper = new three.PointLightHelper(staticPointLightJon, 0.5)
+        const JonSpotLight = new three.SpotLight( 0xffffff, 350, 60, Math.PI / 7)
+        JonSpotLight.position.set( 6 , 23, 5 );
 
-        // scene.add( staticPointLightJonHelper );
-        scene.add( dynamicPointLight );
-        scene.add( staticPointLightJon );
+        const JonSpotLightTarget = new three.Object3D();
+        JonSpotLightTarget.position.set(6, 0, 0); // The point it looks at
+        scene.add(JonSpotLightTarget);
+        JonSpotLight.target = JonSpotLightTarget;
 
+        const titleLight = new three.RectAreaLight(0xffffff, 0.2, 30,30)
+        titleLight.position.set( -20 , 9, 3 );
+        titleLight.lookAt(0, 10, 0);
+        scene.add(titleLight);
+
+        const rectLightHelper = new RectAreaLightHelper(titleLight);
+        scene.add(rectLightHelper);
+
+
+        const staticPointLightMartin = new three.PointLight( 0xffffff, 40, 100 )
+        staticPointLightMartin.position.set( 32, 2, 0 );
+
+        const staticPointLightSa = new three.PointLight( 0xffffff, 40, 100 )
+        staticPointLightSa.position.set( 58, 2, 0 );
 
 
         // Plane
-        const planeGeometry = new three.BoxGeometry( 60, 0.1, 10 );
-        const material = new three.MeshToonMaterial( { color: 0xffffff } );
+        const planeGeometry = new three.BoxGeometry( 160, 0.1, 10 );
+        const material = new three.MeshStandardMaterial( { color: 0xffffff } );
 
 
         const plane1 = new three.Mesh( planeGeometry, material );
@@ -65,7 +83,7 @@ function Three() {
 
 
         // Wall
-        const wallGeometry = new three.BoxGeometry( 60, 8, 0.1 );
+        const wallGeometry = new three.BoxGeometry( 160, 50, 0.1 );
         const wall = new three.Mesh( wallGeometry, material );
         wall.receiveShadow = true
         wall.position.y = 1
@@ -83,9 +101,11 @@ function Three() {
             
             model.traverse((e)=>{
                 e.material = new three.MeshNormalMaterial({ color: 0xffffff });
+                e.material.roughness = 0.1;
+
             })
             
-            glftScene.scene.position.x = 6
+            glftScene.scene.position.x = 3
             glftScene.scene.position.z = -2
             glftScene.scene.scale.set(3,3,3)
             scene.add(glftScene.scene)
@@ -99,7 +119,22 @@ function Three() {
                 e.material = new three.MeshNormalMaterial({ color: 0xffffff });
             })
             
-            glftScene.scene.position.x = 24
+            glftScene.scene.position.x = 30
+            glftScene.scene.position.z = -2
+            glftScene.scene.scale.set(3,3,3)
+            scene.add(glftScene.scene)
+        });
+        
+
+        // Loading Sabona
+        gltfLoader.load('../models/3d_sa.gltf', (glftScene)=> {
+            const model = glftScene.scene;
+            
+            model.traverse((e)=>{
+                e.material = new three.MeshNormalMaterial({ color: 0xffffff });
+            })
+            
+            glftScene.scene.position.x = 55
             glftScene.scene.position.z = -2
             glftScene.scene.scale.set(3,3,3)
             scene.add(glftScene.scene)
@@ -130,12 +165,12 @@ function Three() {
             titleTextMesh.position.z = -4
             titleTextMesh.position.y = 12
             titleTextMesh.position.x = -10
-            // titleTextMesh.rotation.x = -0.4
+            titleTextMesh.rotation.x = 0.1
 
             subtitleTextMesh.position.z = -4
             subtitleTextMesh.position.y = 8
             subtitleTextMesh.position.x = -9.9
-            // subtitleTextMesh.rotation.x = -0.4
+            subtitleTextMesh.rotation.x = 0.1
 
             scene.add(subtitleTextMesh)
             scene.add(titleTextMesh)
@@ -161,12 +196,12 @@ function Three() {
             
             jonTitleTextMesh.position.z = -5.2
             jonTitleTextMesh.position.y = 0.8
-            jonTitleTextMesh.position.x = 10
+            jonTitleTextMesh.position.x = 7
             jonTitleTextMesh.rotation.x = -0.2
 
             jonSubtitleTextMesh.position.z = -5.2
             jonSubtitleTextMesh.position.y = -0.0
-            jonSubtitleTextMesh.position.x = 9.9
+            jonSubtitleTextMesh.position.x = 6.9
             jonSubtitleTextMesh.rotation.x = -0.1
 
             scene.add(jonSubtitleTextMesh)
@@ -191,16 +226,47 @@ function Three() {
             
             martinTitleTextMesh.position.z = -5.2
             martinTitleTextMesh.position.y = 0.8
-            martinTitleTextMesh.position.x = 27
+            martinTitleTextMesh.position.x = 33
             martinTitleTextMesh.rotation.x = -0.2
             
             martinSubtitleTextMesh.position.z = -5.2
             martinSubtitleTextMesh.position.y = -0.0
-            martinSubtitleTextMesh.position.x = 27
+            martinSubtitleTextMesh.position.x = 33
             martinSubtitleTextMesh.rotation.x = -0.1
             
             scene.add(martinSubtitleTextMesh)
             scene.add(martinTitleTextMesh)
+            
+
+            
+            // Sa
+            const SaTitleFontGeometry = new TextGeometry('Girolamo Savonarola', {
+                font : font,
+                size : 0.7,
+                height : 3,
+            });
+
+            const SaSubtitleFontGeometry = new TextGeometry("Girolamo Savonarola was anreformer who opposed \ncorruption in religious spheres. Despite papal restraints, \nhe continued his reforms until his eventual execution.", {
+                font : font,
+                size : 0.4,
+                height : 3,
+            });
+
+            const saTitleTextMesh = new three.Mesh(SaTitleFontGeometry, [ new three.MeshBasicMaterial({color : 0xffffff }) ])
+            const SaSubtitleTextMesh = new three.Mesh(SaSubtitleFontGeometry, [ new three.MeshBasicMaterial({color : 0xffffff }) ])
+            
+            saTitleTextMesh.position.z = -5.2
+            saTitleTextMesh.position.y = 0.8
+            saTitleTextMesh.position.x = 58
+            saTitleTextMesh.rotation.x = -0.2
+            
+            SaSubtitleTextMesh.position.z = -5.2
+            SaSubtitleTextMesh.position.y = -0.0
+            SaSubtitleTextMesh.position.x = 58
+            SaSubtitleTextMesh.rotation.x = -0.1
+            
+            scene.add(SaSubtitleTextMesh)
+            scene.add(saTitleTextMesh)
             
 
             
@@ -223,7 +289,7 @@ function Three() {
         console.log(camera.position.x);
         
 
-        let positionConstant = 0.5
+        let positionConstant = 1
         // On Mouse wheel 
         const handleWheel = (event) => {
 
@@ -231,63 +297,49 @@ function Three() {
 
             if (event.deltaY > 0 && camera.position.y > 2) {
                 camera.position.y -= positionConstant; 
-                dynamicPointLight.position.y -= positionConstant; 
                 {camera.rotation.x >= -0.4 ? camera.rotation.x -= 0.01 : null}
                 console.log(1111);
 
-
-            } else if (event.deltaY < 0 && camera.position.x  < 0.1 && camera.rotation.x <= 0) {
+            } else if (event.deltaY < 0 && camera.position.x  < 0.1 && camera.rotation.x <= 0.03) {
                 console.log(2222);
                 camera.position.y += positionConstant; 
-                dynamicPointLight.position.y += positionConstant; 
                 camera.rotation.x += 0.01
                 // {camera.rotation.x <= -0.4 ? camera.rotation.x += 0.01 : null}                
             }
             else if (event.deltaY < 0 && camera.position.x > 0) {
                 console.log(3333);
                 camera.position.x -= positionConstant; 
-                dynamicPointLight.position.x -= positionConstant; 
 
-            } else if (event.deltaY > 0 && camera.position.x < 40) {
+            } else if (event.deltaY > 0 && camera.position.x < 60) {
                 console.log(4444);
                 camera.position.x += positionConstant;
-                dynamicPointLight.position.x += positionConstant;
+                console.log(camera.position.x, camera.position.y);
+            }
+
+
+            // Lights on distance
+            if (camera.position.y == 2 && (2 < camera.position.x < 5 )) {
+                scene.add( staticPointLightJon ); 
+                scene.remove(staticPointLightMartin)
+                scene.remove(staticPointLightSa)
+            }
+            
+            if (18 < camera.position.x){
+                scene.remove(staticPointLightJon)
+                scene.remove(staticPointLightSa)
+                scene.add(staticPointLightMartin)
+            } if (44 < camera.position.x) {
+                scene.remove(staticPointLightJon)
+                scene.remove(staticPointLightMartin)
+                scene.add(staticPointLightSa)
             }
         };
         window.addEventListener('wheel', handleWheel);
         
         function animate() {
-            // camera.position.x += 0.003;
-            // dynamicPointLight.position.x += 0.003;
-
-
-            
             renderer.render( scene, camera );
         }
-
-
-        // Cube
-        // const geometry = new three.BoxGeometry( 1, 1, 1 );
-        // const material = new three.MeshStandardMaterial( { color: 0xffffff } );
-        // const cube = new three.Mesh( geometry, material );
-        // scene.add( cube );
-
-
-        // //  Grid helper - XZ
-        // const gridHelperXZ = new three.GridHelper(10, 10); // 10x10 grid with 10 divisions
-        // scene.add(gridHelperXZ);
-
-
-        // //  Grid helper - XY
-        // const gridHelperXY = new three.GridHelper(10, 10);
-        // gridHelperXY.rotation.x = Math.PI / 2; // Rotate by 90 degrees to show on XZ plane
-        // scene.add(gridHelperXY);
-        
-        
     })    
-
-
-    
 
 
 
