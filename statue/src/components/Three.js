@@ -23,7 +23,7 @@ function Three() {
         // Init
         const scene = new three.Scene();
         const camera = new three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new three.WebGLRenderer();
+        const renderer = new three.WebGLRenderer({ antialias: true });
         renderer.setSize( window.innerWidth, window.innerHeight);
         renderer.setAnimationLoop( animate );
         sceneRef.current.appendChild(renderer.domElement);
@@ -53,7 +53,7 @@ function Three() {
         scene.add(JonSpotLightTarget);
         JonSpotLight.target = JonSpotLightTarget;
 
-        const titleLight = new three.RectAreaLight(0xffffff, 0.2, 30,30)
+        const titleLight = new three.RectAreaLight(0xfff942, 0.2, 30,30)
         titleLight.position.set( -20 , 9, 3 );
         titleLight.lookAt(0, 10, 0);
         scene.add(titleLight);
@@ -70,7 +70,7 @@ function Three() {
 
 
         // Plane
-        const planeGeometry = new three.BoxGeometry( 160, 0.1, 10 );
+        const planeGeometry = new three.BoxGeometry( 160, 0.1, 15 );
         const material = new three.MeshStandardMaterial( { color: 0xffffff } );
 
 
@@ -159,8 +159,8 @@ function Three() {
                 height : 3,
             });
 
-            const titleTextMesh = new three.Mesh(titleFontGeometry, [ new three.MeshNormalMaterial({color : 0xffffff }) ])
-            const subtitleTextMesh = new three.Mesh(subtitleFontGeometry, [ new three.MeshNormalMaterial({color : 0xa8a8a8 }) ])
+            const titleTextMesh = new three.Mesh(titleFontGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
+            const subtitleTextMesh = new three.Mesh(subtitleFontGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
             
             titleTextMesh.position.z = -4
             titleTextMesh.position.y = 12
@@ -289,7 +289,7 @@ function Three() {
         console.log(camera.position.x);
         
 
-        let positionConstant = 1
+        let positionConstant = 0.2
         // On Mouse wheel 
         const handleWheel = (event) => {
 
@@ -318,7 +318,7 @@ function Three() {
 
 
             // Lights on distance
-            if (camera.position.y == 2 && (2 < camera.position.x < 5 )) {
+            if ((1 < camera.position.x )) {
                 scene.add( staticPointLightJon ); 
                 scene.remove(staticPointLightMartin)
                 scene.remove(staticPointLightSa)
