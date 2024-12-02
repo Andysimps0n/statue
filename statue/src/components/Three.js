@@ -269,7 +269,8 @@ function Three() {
             scene.add(saTitleTextMesh)
             
 
-            
+            scene.add( staticPointLightJon ); 
+
             
             
             
@@ -318,7 +319,7 @@ function Three() {
 
 
             // Lights on distance
-            if ((1 < camera.position.x )) {
+            if ((0 <= camera.position.x )) {
                 scene.add( staticPointLightJon ); 
                 scene.remove(staticPointLightMartin)
                 scene.remove(staticPointLightSa)
