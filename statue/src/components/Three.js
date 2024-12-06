@@ -152,28 +152,44 @@ function Three() {
                 size : 1,
                 height : 3,
             });
-
-            const subtitleFontGeometry = new TextGeometry('Andy Kim', {
+            
+            const subtitleFontGeometry = new TextGeometry('With Luther Monument from Lutherdenkmal, Worms.', {
                 font : font,
                 size : 0.5,
                 height : 3,
             });
 
+            const nameTextGeometry = new TextGeometry('Andy Kim', {
+                font : font,
+                size : 0.5,
+                height : 3,
+            });
+
+
             const titleTextMesh = new three.Mesh(titleFontGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
             const subtitleTextMesh = new three.Mesh(subtitleFontGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
+            const nameTextMesh = new three.Mesh(nameTextGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
             
             titleTextMesh.position.z = -4
             titleTextMesh.position.y = 12
             titleTextMesh.position.x = -10
             titleTextMesh.rotation.x = 0.1
-
-            subtitleTextMesh.position.z = -4
-            subtitleTextMesh.position.y = 8
-            subtitleTextMesh.position.x = -9.9
-            subtitleTextMesh.rotation.x = 0.1
-
-            scene.add(subtitleTextMesh)
             scene.add(titleTextMesh)
+            
+            
+            subtitleTextMesh.position.z = -4
+            subtitleTextMesh.position.y = 8.5
+            subtitleTextMesh.position.x = -9.6
+            subtitleTextMesh.rotation.x = 0.1
+            scene.add(subtitleTextMesh)
+
+            
+            nameTextMesh.position.z = -4
+            nameTextMesh.position.y = 7
+            nameTextMesh.position.x = -9.6
+            nameTextMesh.rotation.x = 0.1
+            scene.add(nameTextMesh)
+
             
             
 
@@ -269,6 +285,7 @@ function Three() {
             scene.add(saTitleTextMesh)
             
 
+            scene.add( staticPointLightJon ); 
             
             
             
