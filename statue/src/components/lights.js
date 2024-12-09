@@ -7,7 +7,7 @@ export default function lights(scene) {
 
 
     // Ambient Light
-    const ambientLight = new three.AmbientLight( 0xffffff, 0.2); 
+    const ambientLight = new three.AmbientLight( 0xffffff, 1); 
     scene.add( ambientLight );
 
 
@@ -53,5 +53,8 @@ export default function lights(scene) {
     const shadowHelper = new three.CameraHelper(spotLight.shadow.camera);
     scene.add(shadowHelper);
 
+
+
+    
 
 }

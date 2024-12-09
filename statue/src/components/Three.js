@@ -43,6 +43,7 @@ function Three() {
         dynamicPointLight.position.set( offsetX, 1, 5 );
 
         const staticPointLightJon = new three.PointLight( 0xffffff, 40, 100 )
+        // const staticPointLightJon = new three.HemisphereLight( 0xffffff, 0x454545, 0.5 )
         staticPointLightJon.position.set( 6, 2, 0 );
 
         const JonSpotLight = new three.SpotLight( 0xffffff, 350, 60, Math.PI / 7)
@@ -53,9 +54,9 @@ function Three() {
         scene.add(JonSpotLightTarget);
         JonSpotLight.target = JonSpotLightTarget;
 
-        const titleLight = new three.RectAreaLight(0xfff942, 0.2, 30,30)
+        const titleLight = new three.RectAreaLight(0xfff942, 0.3, 30,30)
         titleLight.position.set( -20 , 9, 3 );
-        titleLight.lookAt(0, 10, 0);
+        titleLight.lookAt(0, 10, 0);    
         scene.add(titleLight);
 
         const rectLightHelper = new RectAreaLightHelper(titleLight);
@@ -100,7 +101,7 @@ function Three() {
             const model = glftScene.scene;
             
             model.traverse((e)=>{
-                e.material = new three.MeshNormalMaterial({ color: 0xffffff });
+                e.material = new three.MeshPhongMaterial ({ color: 0xffffff });
                 e.material.roughness = 0.1;
 
             })
@@ -116,7 +117,8 @@ function Three() {
             const model = glftScene.scene;
             
             model.traverse((e)=>{
-                e.material = new three.MeshNormalMaterial({ color: 0xffffff });
+                e.material = new three.MeshPhongMaterial({ color: 0xffffff });
+                e.material.shininess = 100
             })
             
             glftScene.scene.position.x = 30
@@ -131,7 +133,7 @@ function Three() {
             const model = glftScene.scene;
             
             model.traverse((e)=>{
-                e.material = new three.MeshNormalMaterial({ color: 0xffffff });
+                e.material = new three.MeshPhongMaterial({ color: 0xffffff });
             })
             
             glftScene.scene.position.x = 55
@@ -309,26 +311,19 @@ function Three() {
         let positionConstant = 0.2
         // On Mouse wheel 
         const handleWheel = (event) => {
-
-
-
             if (event.deltaY > 0 && camera.position.y > 2) {
                 camera.position.y -= positionConstant; 
                 {camera.rotation.x >= -0.4 ? camera.rotation.x -= 0.01 : null}
-                console.log(1111);
 
             } else if (event.deltaY < 0 && camera.position.x  < 0.1 && camera.rotation.x <= 0.03) {
-                console.log(2222);
                 camera.position.y += positionConstant; 
                 camera.rotation.x += 0.01
                 // {camera.rotation.x <= -0.4 ? camera.rotation.x += 0.01 : null}                
             }
             else if (event.deltaY < 0 && camera.position.x > 0) {
-                console.log(3333);
                 camera.position.x -= positionConstant; 
 
             } else if (event.deltaY > 0 && camera.position.x < 60) {
-                console.log(4444);
                 camera.position.x += positionConstant;
                 console.log(camera.position.x, camera.position.y);
             }
