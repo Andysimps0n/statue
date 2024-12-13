@@ -54,7 +54,7 @@ function Three() {
         scene.add(JonSpotLightTarget);
         JonSpotLight.target = JonSpotLightTarget;
 
-        const titleLight = new three.RectAreaLight(0xfff942, 0.3, 30,30)
+        const titleLight = new three.RectAreaLight(0xfff942, 0.6, 30,30)
         titleLight.position.set( -20 , 9, 3 );
         titleLight.lookAt(0, 10, 0);    
         scene.add(titleLight);
@@ -151,7 +151,7 @@ function Three() {
         fontLoader.load('../famog.json', (font)=>{
             const titleFontGeometry = new TextGeometry('Reminiscence of\nThe Reformation', {
                 font : font,
-                size : 1,
+                size : 0.7,
                 height : 3,
             });
             
@@ -173,8 +173,8 @@ function Three() {
             const nameTextMesh = new three.Mesh(nameTextGeometry, [ new three.MeshBasicMaterial({color : 0x00379c }) ])
             
             titleTextMesh.position.z = -4
-            titleTextMesh.position.y = 12
-            titleTextMesh.position.x = -10
+            titleTextMesh.position.y = 13
+            titleTextMesh.position.x = -2.9
             titleTextMesh.rotation.x = 0.1
             scene.add(titleTextMesh)
             
@@ -323,7 +323,7 @@ function Three() {
             else if (event.deltaY < 0 && camera.position.x > 0) {
                 camera.position.x -= positionConstant; 
 
-            } else if (event.deltaY > 0 && camera.position.x < 60) {
+            } else if (event.deltaY > 0 && camera.position.x < 70) {
                 camera.position.x += positionConstant;
                 console.log(camera.position.x, camera.position.y);
             }
