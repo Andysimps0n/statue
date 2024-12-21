@@ -352,6 +352,30 @@ function Three() {
             }
         };
         window.addEventListener('wheel', handleWheel);
+        let startY = 0;
+
+        function handleTouchStart(event) {
+        startY = event.touches[0].clientY;
+        }
+
+        function handleTouchMove(event) {
+        const currentY = event.touches[0].clientY;
+        const deltaY = startY - currentY;
+
+        if (deltaY > 0) {
+            console.log('Swiped up');
+            // Handle swipe up
+        } else if (deltaY < 0) {
+            console.log('Swiped down');
+            // Handle swipe down
+        }
+
+        startY = currentY; // Update startY for smoother interactions
+        }
+
+        // Add event listeners
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchmove', handleTouchMove);
         
         function animate() {
             renderer.render( scene, camera );
