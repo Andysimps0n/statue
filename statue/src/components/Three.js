@@ -313,9 +313,10 @@ function Three() {
         
 
         let positionConstant = 0.2
+        let cameraMinYRotationX = isOnPhone ? 3 : 2
         // On Mouse wheel 
         const handleWheel = (event) => {
-            if (event.deltaY > 0 && camera.position.y > 2) {
+            if (event.deltaY > 0 && camera.position.y > cameraMinYRotationX) {
                 camera.position.y -= positionConstant; 
                 {camera.rotation.x >= -0.4 ? camera.rotation.x -= 0.01 : null}
 
