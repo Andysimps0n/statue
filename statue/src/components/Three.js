@@ -16,6 +16,8 @@ function Three() {
     
     useEffect(()=>{
     
+        const isOnPhone = window.innerWidth <= 700 ? true : false;
+
         let offsetX = 0;
         // let isOrbit = true
         let isOrbit = false
@@ -29,8 +31,9 @@ function Three() {
         sceneRef.current.appendChild(renderer.domElement);
         camera.position.z = 7;
         camera.position.y = 10;
-        camera.position.x = offsetX;
-        camera.rotation.x = 0.05;
+        camera.position.x = isOnPhone ? -7 : 0;
+        // camera.rotation.x = 0.05;
+        camera.rotation.x = 0
         // scene.background = new three.Color(0x87CEEB); // Light blue
 
 
@@ -151,11 +154,12 @@ function Three() {
         fontLoader.load('../famog.json', (font)=>{
             const titleFontGeometry = new TextGeometry('Reminiscence of\nThe Reformation', {
                 font : font,
-                size : 1,
+                size : isOnPhone ? 0.8 : 1,
                 height : 3,
             });
             
-            const subtitleFontGeometry = new TextGeometry('With Luther Monument from Lutherdenkmal, Worms.', {
+            const subtitleFontGeometryText = isOnPhone ? 'With Luther Monument \nfrom Lutherdenkmal, Worms.' :  'With Luther Monument from Lutherdenkmal, Worms.';
+            const subtitleFontGeometry = new TextGeometry(subtitleFontGeometryText, {
                 font : font,
                 size : 0.5,
                 height : 3,
@@ -187,7 +191,7 @@ function Three() {
 
             
             nameTextMesh.position.z = -4
-            nameTextMesh.position.y = 7
+            nameTextMesh.position.y = isOnPhone ? 6 : 7;
             nameTextMesh.position.x = -9.6
             nameTextMesh.rotation.x = 0.1
             scene.add(nameTextMesh)
